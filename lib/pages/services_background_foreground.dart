@@ -32,26 +32,23 @@ void onStart(ServiceInstance service) async{
     service.on("setAsForeground").listen((event) { // this name "setAsForeground" must be the same in home screen when we call it
       service.setAsForegroundService();
     });
-
-    service.on("setAsBackground").listen((event) { // this name "setAsBackground" must be the same in home screen when we call it
-      service.setAsBackgroundService();
-    });
   }
 
   service.on("stopService").listen((event) { // this name "stopService" must be the same in home screen when we call it
     service.stopSelf();
-  });
+  }
+  );
 
-  Timer.periodic(const Duration(seconds: 1), (timer) async {
-     if(service is AndroidServiceInstance){
-        if(await service.isForegroundService()){
-          service.setForegroundNotificationInfo(
-              title: "Example title",
-              content: "This is description");
-        }
-     }
-
-     /// perform some operation on background which is not noticeable to the user everytime
+   Timer.periodic(const Duration(seconds: 1), (timer) async {
+    if (service is AndroidServiceInstance) {
+      if (await service.isForegroundService()) {
+        service.setForegroundNotificationInfo(
+          title: "music.mp3",
+          content: "music is playing",
+        );
+      }
+    }
+     // perform some operation on background which is not noticeable to the user everytime
      print("background service running");
      service.invoke("update");
   });
